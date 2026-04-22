@@ -1,0 +1,72 @@
+2026-04-20 13:31:40 | INFO     | app.routers.chat:chat:34 - Chat request | project_id=None msg_len=2
+2026-04-20 13:31:41 | WARNING  | app.services.gemini_service:_call:90 - Model gemini-2.0-flash failed: Gemini API error 429 (model=gemini-2.0-flash): You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. 
+* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash
+* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash
+* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_input_token_count, limit: 0, model: gemini-2.0-flash
+Please retry in 18.505242201s.
+2026-04-20 13:32:10 | INFO     | app.routers.chat:chat:34 - Chat request | project_id=None msg_len=54
+2026-04-20 13:32:11 | WARNING  | app.services.gemini_service:_call:90 - Model gemini-2.0-flash failed: Gemini API error 429 (model=gemini-2.0-flash): You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. 
+* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_input_token_count, limit: 0, model: gemini-2.0-flash
+* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash
+* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash
+Please retry in 48.587761407s.
+2026-04-20 13:32:29 | INFO     | app.routers.chat:chat:34 - Chat request | project_id=None msg_len=48
+2026-04-20 13:32:30 | WARNING  | app.services.gemini_service:_call:90 - Model gemini-2.0-flash failed: Gemini API error 429 (model=gemini-2.0-flash): You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. 
+* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash
+* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash
+* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_input_token_count, limit: 0, model: gemini-2.0-flash
+Please retry in 29.582037759s.
+2026-04-20 13:32:31 | WARNING  | app.services.gemini_service:_call:90 - Model gemini-2.5-flash failed: Gemini API error 503 (model=gemini-2.5-flash): This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.
+2026-04-20 13:32:32 | WARNING  | app.services.gemini_service:_call:90 - Model gemini-1.0-pro failed: Gemini API error 404 (model=gemini-1.0-pro): models/gemini-1.0-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+2026-04-20 13:32:32 | ERROR    | app.services.gemini_service:_call:93 - All models failed: Gemini API error 404 (model=gemini-1.0-pro): models/gemini-1.0-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+2026-04-20 13:32:40 | INFO     | app.routers.chat:chat:34 - Chat request | project_id=None msg_len=2
+2026-04-20 13:32:41 | WARNING  | app.services.gemini_service:_call:90 - Model gemini-2.0-flash failed: Gemini API error 429 (model=gemini-2.0-flash): You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. 
+* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_input_token_count, limit: 0, model: gemini-2.0-flash
+* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash
+* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash
+Please retry in 18.738766597s.
+2026-04-20 13:32:42 | WARNING  | app.services.gemini_service:_call:90 - Model gemini-2.5-flash failed: Gemini API error 503 (model=gemini-2.5-flash): This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.
+2026-04-20 13:32:42 | WARNING  | app.services.gemini_service:_call:90 - Model gemini-1.0-pro failed: Gemini API error 404 (model=gemini-1.0-pro): models/gemini-1.0-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+2026-04-20 13:32:42 | ERROR    | app.services.gemini_service:_call:93 - All models failed: Gemini API error 404 (model=gemini-1.0-pro): models/gemini-1.0-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+2026-04-20 13:32:54 | INFO     | app.routers.chat:chat:34 - Chat request | project_id=None msg_len=2
+2026-04-20 13:32:56 | WARNING  | app.services.gemini_service:_call:90 - Model gemini-2.0-flash failed: Gemini API error 429 (model=gemini-2.0-flash): You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. 
+* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_input_token_count, limit: 0, model: gemini-2.0-flash
+* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash
+* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash
+Please retry in 4.177079723s.
+2026-04-20 13:32:59 | WARNING  | app.services.gemini_service:_call:90 - Model gemini-2.5-flash failed: Gemini API error 503 (model=gemini-2.5-flash): This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.
+2026-04-20 13:32:59 | WARNING  | app.services.gemini_service:_call:90 - Model gemini-1.0-pro failed: Gemini API error 404 (model=gemini-1.0-pro): models/gemini-1.0-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+2026-04-20 13:32:59 | ERROR    | app.services.gemini_service:_call:93 - All models failed: Gemini API error 404 (model=gemini-1.0-pro): models/gemini-1.0-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+2026-04-20 13:33:15 | INFO     | app.routers.projects:generate_project:29 - Generating project for idea: A SaaS dashboard for monitoring API usage with charts and bi...
+2026-04-20 13:33:15 | INFO     | app.services.project_generator:generate:149 - ML predicted type=analytics confidence=1.0
+2026-04-20 13:33:16 | WARNING  | app.services.gemini_service:_call:90 - Model gemini-2.0-flash failed: Gemini API error 429 (model=gemini-2.0-flash): You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. 
+* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash
+* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash
+* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_input_token_count, limit: 0, model: gemini-2.0-flash
+Please retry in 43.967253411s.
+2026-04-20 13:33:17 | WARNING  | app.services.gemini_service:_call:90 - Model gemini-2.5-flash failed: Gemini API error 503 (model=gemini-2.5-flash): This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.
+2026-04-20 13:33:17 | WARNING  | app.services.gemini_service:_call:90 - Model gemini-1.0-pro failed: Gemini API error 404 (model=gemini-1.0-pro): models/gemini-1.0-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+2026-04-20 13:33:17 | ERROR    | app.services.gemini_service:_call:93 - All models failed: Gemini API error 404 (model=gemini-1.0-pro): models/gemini-1.0-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+2026-04-20 13:33:18 | WARNING  | app.services.gemini_service:_call:90 - Model gemini-2.0-flash failed: Gemini API error 429 (model=gemini-2.0-flash): You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. 
+* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash
+* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash
+* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_input_token_count, limit: 0, model: gemini-2.0-flash
+Please retry in 41.793436332s.
+2026-04-20 13:33:19 | WARNING  | app.services.gemini_service:_call:90 - Model gemini-2.5-flash failed: Gemini API error 503 (model=gemini-2.5-flash): This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.
+2026-04-20 13:33:19 | WARNING  | app.services.gemini_service:_call:90 - Model gemini-1.0-pro failed: Gemini API error 404 (model=gemini-1.0-pro): models/gemini-1.0-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+2026-04-20 13:33:19 | ERROR    | app.services.gemini_service:_call:93 - All models failed: Gemini API error 404 (model=gemini-1.0-pro): models/gemini-1.0-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+2026-04-20 13:33:19 | INFO     | app.services.project_generator:_write_to_disk:261 - Project written to generated_projects/a-saas-dashboard-app
+2026-04-20 13:33:19 | INFO     | app.services.project_generator:_create_zip:269 - ZIP created: generated_projects/a-saas-dashboard-app.zip
+2026-04-20 13:33:20 | INFO     | main:lifespan:33 - Shutting down.
+2026-04-20 13:33:21 | INFO     | app.core.logging:setup_logging:30 - Logging initialised | debug=True
+2026-04-20 13:33:21 | INFO     | main:lifespan:29 - Starting ProjectPilot v1.0.0
+2026-04-20 13:33:21 | INFO     | app.database:init_db:42 - Database tables created / verified.
+2026-04-20 13:33:42 | INFO     | app.routers.chat:chat:34 - Chat request | project_id=None msg_len=3
+2026-04-20 13:33:42 | WARNING  | app.services.gemini_service:_call:90 - Model gemini-2.0-flash failed: Gemini API error 429 (model=gemini-2.0-flash): You exceeded your current quota, please check your plan and billing details. For more information on this error, head to: https://ai.google.dev/gemini-api/docs/rate-limits. To monitor your current usage, head to: https://ai.dev/rate-limit. 
+* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_input_token_count, limit: 0, model: gemini-2.0-flash
+* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash
+* Quota exceeded for metric: generativelanguage.googleapis.com/generate_content_free_tier_requests, limit: 0, model: gemini-2.0-flash
+Please retry in 17.303446671s.
+2026-04-20 13:33:45 | WARNING  | app.services.gemini_service:_call:90 - Model gemini-2.5-flash failed: Gemini API error 503 (model=gemini-2.5-flash): This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.
+2026-04-20 13:33:45 | WARNING  | app.services.gemini_service:_call:90 - Model gemini-1.0-pro failed: Gemini API error 404 (model=gemini-1.0-pro): models/gemini-1.0-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
+2026-04-20 13:33:45 | ERROR    | app.services.gemini_service:_call:93 - All models failed: Gemini API error 404 (model=gemini-1.0-pro): models/gemini-1.0-pro is not found for API version v1beta, or is not supported for generateContent. Call ListModels to see the list of available models and their supported methods.
