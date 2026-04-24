@@ -1,0 +1,2 @@
+# This file ensures the generated_projects directory is tracked by git
+# while ignoring its contents (see .gitignore)
