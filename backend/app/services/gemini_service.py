@@ -31,13 +31,29 @@ class GeminiService:
 
         self._client = httpx.Client(timeout=60.0)
 
-        # Detect OpenAI key format (very small heuristic) and switch endpoints
-        self._use_openai = bool(self._api_key and str(self._api_key).startswith("sk-"))
+        # Detect OpenAI key format vs OpenRouter vs Gemini
+        # OpenAI keys: sk-proj-... or sk-... (but not sk-or-...)
+        # OpenRouter keys: sk-or-v1-...
+        # Gemini keys: AIza...
+        self._use_openai = bool(
+            self._api_key 
+            and str(self._api_key).startswith("sk-") 
+            and not str(self._api_key).startswith("sk-or-")
+        )
+        self._use_openrouter = bool(
+            self._api_key 
+            and str(self._api_key).startswith("sk-or-")
+        )
 
         if not self._api_key:
             logger.warning("openai_api_key is not set.")
         else:
-            provider = "OpenAI" if self._use_openai else "Gemini"
+            if self._use_openrouter:
+                provider = "OpenRouter"
+            elif self._use_openai:
+                provider = "OpenAI"
+            else:
+                provider = "Gemini"
             logger.info(f"GeminiService ready | provider={provider} model={self._model}")
 
     # ── Internal HTTP helper ──────────────────────────────────────────────────
@@ -47,7 +63,36 @@ class GeminiService:
         if not self._api_key:
             raise RuntimeError("Missing API key (openai_api_key)")
 
-        if self._use_openai:
+        if self._use_openrouter:
+            # Call OpenRouter API (OpenAI-compatible)
+            url = "https://openrouter.ai/api/v1/chat/completions"
+            headers = {
+                "Authorization": f"Bearer {self._api_key}",
+                "Content-Type": "application/json",
+                "HTTP-Referer": "http://localhost:3000",  # Optional but recommended
+                "X-Title": "ProjectPilot"  # Optional but recommended
+            }
+
+            resp = self._client.post(url, json=payload, headers=headers)
+
+            if resp.status_code != 200:
+                try:
+                    detail = resp.json().get("error", {}).get("message", resp.text)
+                except Exception:
+                    detail = resp.text
+
+                raise RuntimeError(f"OpenRouter API error {resp.status_code} (model={model}): {detail}")
+
+            data = resp.json()
+            try:
+                choice = data.get("choices", [])[0]
+                if "message" in choice:
+                    return choice["message"].get("content", "")
+                return choice.get("text", "")
+            except Exception:
+                raise RuntimeError(f"Unexpected OpenRouter response: {data}")
+
+        elif self._use_openai:
             # Call OpenAI Chat Completions API
             url = "https://api.openai.com/v1/chat/completions"
             headers = {"Authorization": f"Bearer {self._api_key}", "Content-Type": "application/json"}
@@ -97,25 +142,6 @@ class GeminiService:
         if not self._api_key:
             return self._mock(prompt)
 
-        # Build payload depending on provider
-        if self._use_openai:
-            payload = {
-                "model": model,
-                "messages": [{"role": "user", "content": prompt}],
-                "temperature": 0.7,
-                "top_p": 0.9,
-                "max_tokens": 2048,
-            }
-        else:
-            payload = {
-                "contents": [{"parts": [{"text": prompt}]}],
-                "generationConfig": {
-                    "temperature": 0.7,
-                    "topP": 0.9,
-                    "maxOutputTokens": 2048,
-                },
-            }
-
         models_to_try = [self._model] + [
             m for m in _MODEL_FALLBACK_CHAIN if m != self._model
         ]
@@ -124,6 +150,25 @@ class GeminiService:
 
         for model in models_to_try:
             try:
+                # Build payload depending on provider
+                if self._use_openrouter or self._use_openai:
+                    payload = {
+                        "model": model,
+                        "messages": [{"role": "user", "content": prompt}],
+                        "temperature": 0.7,
+                        "top_p": 0.9,
+                        "max_tokens": 2048,
+                    }
+                else:
+                    payload = {
+                        "contents": [{"parts": [{"text": prompt}]}],
+                        "generationConfig": {
+                            "temperature": 0.7,
+                            "topP": 0.9,
+                            "maxOutputTokens": 2048,
+                        },
+                    }
+                
                 return self._post(model, payload)
             except RuntimeError as e:
                 logger.warning(f"Model {model} failed: {e}")

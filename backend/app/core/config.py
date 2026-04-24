@@ -5,8 +5,6 @@ import os
 
 
 class Settings(BaseSettings):
-    # Allow env vars that aren't defined as fields (we read some manually).
-    model_config = {"extra": "ignore"}
     # App
     APP_NAME: str = "ProjectPilot"
     APP_VERSION: str = "1.0.0"

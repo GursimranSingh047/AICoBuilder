@@ -160,8 +160,20 @@ class ProjectGeneratorService:
         try:
             ai_files = gemini_service.generate_project_code(idea, stack)
             if isinstance(ai_files, dict) and "raw" not in ai_files:
-                files.update(ai_files)
-                logger.info(f"Gemini generated {len(ai_files)} files.")
+                # Validate that all values are strings or can be converted
+                validated_files = {}
+                for path, content in ai_files.items():
+                    if isinstance(content, list):
+                        validated_files[path] = "\n".join(str(item) for item in content)
+                    elif isinstance(content, str):
+                        validated_files[path] = content
+                    else:
+                        validated_files[path] = str(content)
+                
+                files.update(validated_files)
+                logger.info(f"Gemini generated {len(validated_files)} files.")
+            else:
+                logger.warning(f"Gemini returned unexpected format: {type(ai_files)}")
         except Exception as exc:
             logger.warning(f"Gemini code generation skipped: {exc}")
 
@@ -257,6 +269,13 @@ services:
         for rel_path, content in files.items():
             full_path = project_dir / rel_path
             full_path.parent.mkdir(parents=True, exist_ok=True)
+            
+            # Handle case where content might be a list or other non-string type
+            if isinstance(content, list):
+                content = "\n".join(str(item) for item in content)
+            elif not isinstance(content, str):
+                content = str(content)
+            
             full_path.write_text(content, encoding="utf-8")
         logger.info(f"Project written to {project_dir}")
         return project_dir
@@ -265,6 +284,12 @@ services:
         zip_path = settings.projects_path / f"{slug}.zip"
         with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zf:
             for rel_path, content in files.items():
+                # Handle case where content might be a list or other non-string type
+                if isinstance(content, list):
+                    content = "\n".join(str(item) for item in content)
+                elif not isinstance(content, str):
+                    content = str(content)
+                
                 zf.writestr(f"{slug}/{rel_path}", content)
         logger.info(f"ZIP created: {zip_path}")
         return zip_path

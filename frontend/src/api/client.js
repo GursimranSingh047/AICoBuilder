@@ -37,8 +37,9 @@ export const authAPI = {
 // ─── Projects ─────────────────────────────────────────────────────────────────
 export const projectsAPI = {
   // POST /projects/generate  { idea, project_name? }
+  // Increased timeout for generation (can take longer)
   generate: (idea, projectName = null) =>
-    api.post('/projects/generate', { idea, project_name: projectName }),
+    api.post('/projects/generate', { idea, project_name: projectName }, { timeout: 120000 }),
 
   // GET /projects/
   list: (skip = 0, limit = 20) =>
