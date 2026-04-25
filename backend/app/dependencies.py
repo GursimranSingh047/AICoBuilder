@@ -1,6 +1,7 @@
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
+from typing import Optional
 
 from app.core.security import decode_access_token
 from app.database import get_db
@@ -10,7 +11,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login", auto_error=False)
 
 
 def get_current_user(
-    token: str | None = Depends(oauth2_scheme),
+    token: Optional[str] = Depends(oauth2_scheme),
     db: Session = Depends(get_db),
 ) -> User:
     """Strict: raises 401 if not authenticated."""
@@ -26,9 +27,9 @@ def get_current_user(
 
 
 def get_optional_user(
-    token: str | None = Depends(oauth2_scheme),
+    token: Optional[str] = Depends(oauth2_scheme),
     db: Session = Depends(get_db),
-) -> User | None:
+) -> Optional[User]:
     """Lenient: returns None if not authenticated (for optional auth endpoints)."""
     if not token:
         return None

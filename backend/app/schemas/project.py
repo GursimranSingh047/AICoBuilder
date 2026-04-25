@@ -1,13 +1,13 @@
 from pydantic import BaseModel, Field
 from datetime import datetime
-from typing import Any
+from typing import Any, Optional, List, Dict
 
 
 # ─── Request Schemas ──────────────────────────────────────────────────────────
 
 class GenerateProjectRequest(BaseModel):
     idea: str = Field(..., min_length=10, max_length=2000, description="Plain-language project idea")
-    project_name: str | None = Field(None, max_length=100)
+    project_name: Optional[str] = Field(None, max_length=100)
 
     model_config = {
         "json_schema_extra": {
@@ -21,8 +21,8 @@ class GenerateProjectRequest(BaseModel):
 
 class ChatRequest(BaseModel):
     message: str = Field(..., min_length=1, max_length=4000)
-    project_id: int | None = None
-    history: list[dict[str, str]] = Field(default_factory=list)
+    project_id: Optional[int] = None
+    history: List[Dict[str, str]] = Field(default_factory=list)
 
 
 class SuggestRequest(BaseModel):
@@ -35,29 +35,29 @@ class FileNode(BaseModel):
     name: str
     type: str           # "file" | "folder"
     path: str
-    content: str | None = None
-    children: list["FileNode"] = Field(default_factory=list)
+    content: Optional[str] = None
+    children: List["FileNode"] = Field(default_factory=list)
 
 
 class GenerateProjectResponse(BaseModel):
     project_id: int
     name: str
-    tech_stack: dict[str, Any]
-    folder_structure: dict[str, Any]
-    files: dict[str, str]          # path → content
+    tech_stack: Dict[str, Any]
+    folder_structure: Dict[str, Any]
+    files: Dict[str, str]          # path → content
     readme: str
     status: str
-    zip_download_url: str | None = None
+    zip_download_url: Optional[str] = None
 
 
 class ChatResponse(BaseModel):
     reply: str
-    project_id: int | None = None
+    project_id: Optional[int] = None
 
 
 class SuggestResponse(BaseModel):
-    recommended_stack: dict[str, str]
-    suggested_features: list[str]
+    recommended_stack: Dict[str, str]
+    suggested_features: List[str]
     project_type: str
     confidence: float
 
@@ -65,9 +65,9 @@ class SuggestResponse(BaseModel):
 class ProjectSummary(BaseModel):
     id: int
     name: str
-    description: str | None
+    description: Optional[str]
     status: str
-    tech_stack: dict[str, Any]
+    tech_stack: Dict[str, Any]
     created_at: datetime
 
     model_config = {"from_attributes": True}
@@ -75,7 +75,7 @@ class ProjectSummary(BaseModel):
 
 class ProjectDetail(ProjectSummary):
     idea_prompt: str
-    folder_structure: dict[str, Any]
-    generated_files: dict[str, Any]
-    zip_path: str | None
-    local_path: str | None
+    folder_structure: Dict[str, Any]
+    generated_files: Dict[str, Any]
+    zip_path: Optional[str]
+    local_path: Optional[str]

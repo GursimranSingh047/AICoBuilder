@@ -7,7 +7,7 @@ Training runs once on startup if no saved model is found.
 
 import json
 from pathlib import Path
-from typing import Any
+from typing import Any, Optional, List, Dict, Tuple
 
 import joblib
 import numpy as np
@@ -19,7 +19,7 @@ from sklearn.svm import LinearSVC
 
 # ─── Training Data ────────────────────────────────────────────────────────────
 
-TRAINING_DATA: list[tuple[str, str]] = [
+TRAINING_DATA: List[Tuple[str, str]] = [
     # (idea snippet, project_type)
     ("ecommerce shop online store cart payment stripe", "ecommerce"),
     ("buy sell product catalog checkout order", "ecommerce"),
@@ -49,7 +49,7 @@ TRAINING_DATA: list[tuple[str, str]] = [
     ("education learning quiz course lesson student", "education"),
 ]
 
-STACK_MAP: dict[str, dict[str, str]] = {
+STACK_MAP: Dict[str, Dict[str, str]] = {
     "ecommerce":   {"frontend": "Next.js", "backend": "FastAPI", "database": "PostgreSQL", "extra": "Stripe, Redis"},
     "social":      {"frontend": "React",   "backend": "FastAPI", "database": "PostgreSQL", "extra": "WebSocket, Redis"},
     "analytics":   {"frontend": "React",   "backend": "FastAPI", "database": "ClickHouse", "extra": "Pandas, Plotly"},
@@ -65,7 +65,7 @@ STACK_MAP: dict[str, dict[str, str]] = {
     "education":   {"frontend": "Next.js", "backend": "FastAPI", "database": "PostgreSQL", "extra": "S3, Celery"},
 }
 
-FEATURES_MAP: dict[str, list[str]] = {
+FEATURES_MAP: Dict[str, List[str]] = {
     "ecommerce":   ["Product catalog", "Shopping cart", "Checkout flow", "Order tracking", "Payment integration", "Inventory management"],
     "social":      ["User profiles", "News feed", "Real-time messaging", "Follow/friend system", "Notifications", "Media uploads"],
     "analytics":   ["Interactive dashboards", "Custom date ranges", "CSV/Excel export", "User segmentation", "Alerts", "API data ingestion"],
@@ -86,8 +86,8 @@ MODEL_PATH = Path(__file__).parent / "../ml/project_type_model.pkl"
 
 class MLService:
     def __init__(self):
-        self._pipeline: Pipeline | None = None
-        self._classes: list[str] = []
+        self._pipeline: Optional[Pipeline] = None
+        self._classes: List[str] = []
         self._load_or_train()
 
     # ─── Model lifecycle ──────────────────────────────────────────────────────
@@ -119,7 +119,7 @@ class MLService:
 
     # ─── Prediction ───────────────────────────────────────────────────────────
 
-    def predict(self, idea: str) -> dict[str, Any]:
+    def predict(self, idea: str) -> Dict[str, Any]:
         """
         Given a plain-text project idea, return:
         - project_type
@@ -160,7 +160,7 @@ class MLService:
             return self._fallback(idea)
 
     @staticmethod
-    def _fallback(idea: str) -> dict[str, Any]:
+    def _fallback(idea: str) -> Dict[str, Any]:
         """Safe default when the model is unavailable."""
         return {
             "project_type": "saas",

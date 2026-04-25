@@ -1,5 +1,6 @@
 from pydantic import BaseModel, EmailStr, field_validator
 from datetime import datetime
+from typing import Optional
 
 
 class UserCreate(BaseModel):
@@ -46,4 +47,4 @@ class Token(BaseModel):
 
 
 class TokenData(BaseModel):
-    user_id: int | None = None
+    user_id: Optional[int] = None

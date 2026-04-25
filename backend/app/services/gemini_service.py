@@ -4,7 +4,7 @@ gemini_service.py — ProjectPilot AI Layer (FINAL FIXED VERSION)
 
 import json
 import re
-from typing import Any
+from typing import Any, Optional
 
 import httpx
 from loguru import logger
@@ -26,7 +26,7 @@ _MODEL_FALLBACK_CHAIN = [
 class GeminiService:
     def __init__(self):
         # API key and model
-        self._api_key: str | None = settings.GEMINI_API_KEY
+        self._api_key: Optional[str] = settings.GEMINI_API_KEY
         self._model: str = settings.GEMINI_MODEL or _MODEL_FALLBACK_CHAIN[0]
 
         self._client = httpx.Client(timeout=60.0)

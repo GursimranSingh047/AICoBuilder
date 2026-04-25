@@ -1,6 +1,7 @@
 from pydantic_settings import BaseSettings
 from functools import lru_cache
 from pathlib import Path
+from typing import Optional, List
 import os
 
 
@@ -21,7 +22,7 @@ class Settings(BaseSettings):
     # OpenAI / Gemini compatibility
     # The settings object exposes `GEMINI_*` names for internal use but will
     # fall back to the `openai_api_key` / `OPENAI_MODEL` env vars at startup.
-    GEMINI_API_KEY: str | None = None
+    GEMINI_API_KEY: Optional[str] = None
     GEMINI_MODEL: str = "gemini-2.0-flash"
 
     # Storage
@@ -31,7 +32,7 @@ class Settings(BaseSettings):
     ALLOWED_ORIGINS: str = "http://localhost:3000,http://localhost:5173"
 
     @property
-    def allowed_origins_list(self) -> list[str]:
+    def allowed_origins_list(self) -> List[str]:
         return [o.strip() for o in self.ALLOWED_ORIGINS.split(",")]
 
     @property

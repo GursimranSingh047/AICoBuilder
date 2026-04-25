@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
 from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 from pathlib import Path
+from typing import List
 from loguru import logger
 
 from app.database import get_db
@@ -74,7 +75,7 @@ def generate_project(
         raise HTTPException(status_code=500, detail=f"Generation failed: {str(exc)}")
 
 
-@router.get("/", response_model=list[ProjectSummary])
+@router.get("/", response_model=List[ProjectSummary])
 def list_projects(
     skip: int = 0,
     limit: int = 20,

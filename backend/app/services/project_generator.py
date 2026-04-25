@@ -10,7 +10,7 @@ import os
 import re
 import zipfile
 from pathlib import Path
-from typing import Any
+from typing import Any, Optional, Dict, List
 
 from loguru import logger
 
@@ -20,7 +20,7 @@ from app.services.ml_service import ml_service, STACK_MAP
 
 # ─── Boilerplate templates ────────────────────────────────────────────────────
 
-BOILERPLATE: dict[str, dict[str, str]] = {
+BOILERPLATE: Dict[str, Dict[str, str]] = {
     "fastapi": {
         "main.py": '''\
 from fastapi import FastAPI
@@ -118,7 +118,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     },
 }
 
-FOLDER_STRUCTURE_MAP: dict[str, list[str]] = {
+FOLDER_STRUCTURE_MAP: Dict[str, List[str]] = {
     "fastapi": ["app/", "app/models/", "app/routers/", "app/services/", "app/schemas/", "tests/"],
     "react":   ["src/", "src/components/", "src/pages/", "src/hooks/", "src/api/", "public/"],
     "nextjs":  ["app/", "components/", "lib/", "public/", "styles/"],
@@ -135,7 +135,7 @@ class ProjectGeneratorService:
     Orchestrates V1 (rule-based scaffolding) + V2 (Gemini code gen).
     """
 
-    def generate(self, idea: str, project_name: str | None = None) -> dict[str, Any]:
+    def generate(self, idea: str, project_name: Optional[str] = None) -> Dict[str, Any]:
         """
         Full pipeline: ML prediction → scaffold → Gemini code gen → disk write → zip.
         Returns a dict compatible with GenerateProjectResponse schema.
@@ -154,7 +154,7 @@ class ProjectGeneratorService:
 
         # ── Step 3: Rule-based scaffold ──────────────────────────────────────
         folder_structure = self._build_folder_structure(stack, project_type)
-        files: dict[str, str] = self._generate_boilerplate(name, slug, stack)
+        files: Dict[str, str] = self._generate_boilerplate(name, slug, stack)
 
         # ── Step 4: Gemini code generation ───────────────────────────────────
         try:
@@ -206,7 +206,7 @@ class ProjectGeneratorService:
         return " ".join(w.capitalize() for w in words) + " App"
 
     @staticmethod
-    def _build_folder_structure(stack: dict[str, str], project_type: str) -> dict[str, Any]:
+    def _build_folder_structure(stack: Dict[str, str], project_type: str) -> Dict[str, Any]:
         frontend = stack.get("frontend", "React").lower()
         backend = stack.get("backend", "FastAPI").lower()
 
@@ -219,8 +219,8 @@ class ProjectGeneratorService:
         }
 
     @staticmethod
-    def _generate_boilerplate(name: str, slug: str, stack: dict[str, str]) -> dict[str, str]:
-        files: dict[str, str] = {}
+    def _generate_boilerplate(name: str, slug: str, stack: Dict[str, str]) -> Dict[str, str]:
+        files: Dict[str, str] = {}
         frontend = stack.get("frontend", "").lower()
         backend = stack.get("backend", "").lower()
 
@@ -264,7 +264,7 @@ services:
 """
         return files
 
-    def _write_to_disk(self, slug: str, files: dict[str, str]) -> Path:
+    def _write_to_disk(self, slug: str, files: Dict[str, str]) -> Path:
         project_dir = settings.projects_path / slug
         for rel_path, content in files.items():
             full_path = project_dir / rel_path
@@ -280,7 +280,7 @@ services:
         logger.info(f"Project written to {project_dir}")
         return project_dir
 
-    def _create_zip(self, slug: str, files: dict[str, str]) -> Path:
+    def _create_zip(self, slug: str, files: Dict[str, str]) -> Path:
         zip_path = settings.projects_path / f"{slug}.zip"
         with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zf:
             for rel_path, content in files.items():

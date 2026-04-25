@@ -1,6 +1,10 @@
 from datetime import datetime, timezone
 from sqlalchemy import String, Boolean, DateTime
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from typing import TYPE_CHECKING, List
+
+if TYPE_CHECKING:
+    from app.models.project import Project
 
 from app.database import Base
 
@@ -18,6 +22,6 @@ class User(Base):
     )
 
     # Relationships
-    projects: Mapped[list["Project"]] = relationship(  # noqa: F821
+    projects: Mapped[List["Project"]] = relationship(  # noqa: F821
         "Project", back_populates="owner", cascade="all, delete-orphan"
     )
