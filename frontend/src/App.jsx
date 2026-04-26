@@ -1,8 +1,10 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { Toaster } from 'react-hot-toast'
 import { AuthProvider, useAuth } from './context/AuthContext'
 
 import AppLayout   from './components/Layout/AppLayout'
+import Landing     from './pages/Landing'
 import Dashboard   from './pages/Dashboard'
 import Generator   from './pages/Generator'
 import Chat        from './pages/Chat'
@@ -22,6 +24,9 @@ export default function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
+          {/* Landing page */}
+          <Route path="/landing" element={<Landing />} />
+          
           {/* Auth pages */}
           <Route path="/login"  element={<Login />} />
           <Route path="/signup" element={<Signup />} />
@@ -35,8 +40,34 @@ export default function App() {
             <Route path="projects/:id"        element={<ProjectViewer />} />
           </Route>
 
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="*" element={<Navigate to="/landing" replace />} />
         </Routes>
+        
+        {/* Toast notifications */}
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            duration: 4000,
+            style: {
+              background: '#1a1a23',
+              color: '#e2e8f0',
+              border: '1px solid #2a2a35',
+              borderRadius: '12px',
+            },
+            success: {
+              iconTheme: {
+                primary: '#10b981',
+                secondary: '#1a1a23',
+              },
+            },
+            error: {
+              iconTheme: {
+                primary: '#ef4444',
+                secondary: '#1a1a23',
+              },
+            },
+          }}
+        />
       </BrowserRouter>
     </AuthProvider>
   )

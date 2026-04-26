@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { motion, AnimatePresence } from 'framer-motion'
+import toast from 'react-hot-toast'
 import { Sparkles, Zap, ArrowRight, RotateCcw, Download, ExternalLink, ChevronDown, ChevronUp } from 'lucide-react'
 import { projectsAPI, suggestAPI } from '../api/client'
 import { PageHeader, ErrorBanner, Spinner } from '../components/UI'
 import FileTree from '../components/FileTree'
 import CodeViewer from '../components/CodeViewer'
+import LoadingSpinner from '../components/LoadingSpinner'
 
 const EXAMPLE_IDEAS = [
   'A SaaS dashboard for monitoring API usage with charts and billing',
@@ -33,8 +36,9 @@ export default function Generator() {
     try {
       const { data } = await suggestAPI.suggest(idea)
       setSuggestion(data)
+      toast.success('AI suggestions generated!')
     } catch (e) {
-      // non-blocking
+      toast.error('Failed to get suggestions')
     } finally {
       setSuggesting(false)
     }
@@ -48,13 +52,18 @@ export default function Generator() {
     setResult(null)
     setSuggestion(null)
     setSelectedFile(null)
+    
+    const loadingToast = toast.loading('Generating your project...')
+    
     try {
       const { data } = await projectsAPI.generate(idea, projectName || null)
       setResult(data)
       // Auto-select README
       if (data.files?.['README.md']) setSelectedFile('README.md')
+      toast.success('Project generated successfully!', { id: loadingToast })
     } catch (e) {
       setError(e.message)
+      toast.error('Failed to generate project', { id: loadingToast })
     } finally {
       setLoading(false)
     }
@@ -66,7 +75,12 @@ export default function Generator() {
   const visibleFiles = showAllFiles ? Object.keys(files) : Object.keys(files).slice(0, 8)
 
   return (
-    <div className="px-8 py-8 max-w-6xl mx-auto animate-fade-in">
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      className="px-8 py-8 max-w-6xl mx-auto"
+    >
       <PageHeader
         title="Project Generator"
         subtitle="Describe your idea — AI builds the full project"
@@ -77,9 +91,17 @@ export default function Generator() {
         )}
       />
 
-      {!result ? (
-        /* ── Input panel ───────────────────────────────────────────────── */
-        <div className="max-w-2xl mx-auto space-y-5 animate-slide-up">
+      <AnimatePresence mode="wait">
+        {!result ? (
+          /* ── Input panel ───────────────────────────────────────────────── */
+          <motion.div 
+            key="input"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.6 }}
+            className="max-w-2xl mx-auto space-y-5"
+          >
 
           {/* Idea input */}
           <div className="card space-y-4">
@@ -116,24 +138,31 @@ export default function Generator() {
           </div>
 
           {/* Loading progress */}
-          {loading && (
-            <div className="card space-y-3 animate-fade-in">
-              <div className="flex items-center gap-3">
-                <Spinner size={16} />
-                <span className="text-sm text-subtle">Building your project…</span>
-              </div>
-              {['Analysing idea with ML model', 'Selecting tech stack', 'Scaffolding folder structure', 'Generating code with Gemini', 'Writing README'].map((step, i) => (
-                <div key={i} className="flex items-center gap-2 text-xs text-muted" style={{ animationDelay: `${i * 0.4}s` }}>
-                  <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" style={{ animationDelay: `${i * 0.3}s` }} />
-                  {step}
-                </div>
-              ))}
-            </div>
-          )}
+          <AnimatePresence>
+            {loading && (
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                className="card"
+              >
+                <LoadingSpinner 
+                  type="project-generation" 
+                  message="Generating your project..."
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* ML suggestion result */}
-          {suggestion && !loading && (
-            <div className="card animate-slide-up space-y-4">
+          <AnimatePresence>
+            {suggestion && !loading && (
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="card space-y-4"
+              >
               <div className="flex items-center justify-between">
                 <p className="text-sm font-semibold text-white">ML Recommendations</p>
                 <span className="tag-accent">
@@ -156,8 +185,9 @@ export default function Generator() {
                   ))}
                 </div>
               </div>
-            </div>
-          )}
+            </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Example ideas */}
           <div>
@@ -176,10 +206,17 @@ export default function Generator() {
           </div>
 
           <ErrorBanner message={error} onDismiss={() => setError(null)} />
-        </div>
+        </motion.div>
       ) : (
         /* ── Result panel ──────────────────────────────────────────────── */
-        <div className="animate-slide-up space-y-6">
+        <motion.div 
+          key="result"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.6 }}
+          className="space-y-6"
+        >
 
           {/* Project meta */}
           <div className="card flex items-start justify-between gap-4">
@@ -233,8 +270,9 @@ export default function Generator() {
               <span className="tag-accent">{result.tech_stack.project_type}</span>
             </div>
           )}
-        </div>
+        </motion.div>
       )}
-    </div>
+      </AnimatePresence>
+    </motion.div>
   )
 }

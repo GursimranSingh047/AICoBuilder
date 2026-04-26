@@ -1,8 +1,9 @@
 import React from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import {
   LayoutDashboard, Sparkles, MessageSquare, Lightbulb,
-  LogOut, LogIn, User, Zap
+  LogOut, LogIn, User, Zap, Home
 } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 
@@ -11,6 +12,7 @@ const links = [
   { to: '/generator',  label: 'Generator',  icon: Sparkles },
   { to: '/chat',       label: 'AI Chat',    icon: MessageSquare },
   { to: '/suggestions',label: 'Suggestions',icon: Lightbulb },
+  { to: '/landing',    label: 'Home',       icon: Home },
 ]
 
 export default function Sidebar() {
@@ -18,40 +20,78 @@ export default function Sidebar() {
   const navigate = useNavigate()
 
   return (
-    <aside className="w-60 flex-shrink-0 h-screen flex flex-col border-r border-border bg-surface-1">
+    <motion.aside 
+      initial={{ x: -60, opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className="w-60 flex-shrink-0 h-screen flex flex-col border-r border-border bg-surface-1"
+    >
       {/* Logo */}
-      <div className="px-5 py-5 border-b border-border">
+      <motion.div 
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.2, duration: 0.6 }}
+        className="px-5 py-5 border-b border-border"
+      >
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center animate-pulse-glow">
+          <motion.div 
+            className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center"
+            animate={{ 
+              boxShadow: [
+                "0 0 20px rgba(99, 102, 241, 0.3)",
+                "0 0 30px rgba(99, 102, 241, 0.5)",
+                "0 0 20px rgba(99, 102, 241, 0.3)"
+              ]
+            }}
+            transition={{ duration: 2, repeat: Infinity }}
+          >
             <Zap size={16} className="text-white" />
-          </div>
+          </motion.div>
           <div>
             <div className="font-display text-base font-bold text-white leading-none">ProjectPilot</div>
             <div className="text-[10px] text-muted font-mono mt-0.5">AI Co-Builder</div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Nav links */}
       <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
-        <p className="text-[10px] font-mono uppercase text-muted/60 px-3 pb-2 tracking-wider">Navigation</p>
-        {links.map(({ to, label, icon: Icon, end }) => (
-          <NavLink
+        <motion.p 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4, duration: 0.6 }}
+          className="text-[10px] font-mono uppercase text-muted/60 px-3 pb-2 tracking-wider"
+        >
+          Navigation
+        </motion.p>
+        {links.map(({ to, label, icon: Icon, end }, index) => (
+          <motion.div
             key={to}
-            to={to}
-            end={end}
-            className={({ isActive }) =>
-              `sidebar-link${isActive ? ' active' : ''}`
-            }
+            initial={{ x: -20, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            transition={{ delay: 0.5 + index * 0.1, duration: 0.6 }}
           >
-            <Icon size={16} />
-            <span>{label}</span>
-          </NavLink>
+            <NavLink
+              to={to}
+              end={end}
+              className={({ isActive }) =>
+                `sidebar-link${isActive ? ' active' : ''}`
+              }
+            >
+              <Icon size={16} />
+              <span>{label}</span>
+            </NavLink>
+          </motion.div>
         ))}
       </nav>
 
       {/* User section */}
-      <div className="px-3 py-4 border-t border-border">
+      <motion.div 
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.8, duration: 0.6 }}
+        className="px-3 py-4 border-t border-border"
+      >
         {user ? (
           <div className="space-y-1">
             <div className="flex items-center gap-3 px-3 py-2">
@@ -79,7 +119,7 @@ export default function Sidebar() {
             </button>
           </div>
         )}
-      </div>
-    </aside>
+      </motion.div>
+    </motion.aside>
   )
 }

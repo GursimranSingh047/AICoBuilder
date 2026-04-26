@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import { Sparkles, MessageSquare, Lightbulb, FolderOpen, ArrowRight, Clock, CheckCircle, AlertCircle, Loader } from 'lucide-react'
 import { projectsAPI } from '../api/client'
 import { PageHeader, StatCard, SkeletonCard, EmptyState } from '../components/UI'
+import { useAuth } from '../context/AuthContext'
 
 const statusIcon = {
   completed: <CheckCircle size={13} className="text-emerald" />,
@@ -26,15 +28,22 @@ const quickActions = [
 
 export default function Dashboard() {
   const navigate = useNavigate()
+  const { user } = useAuth()
   const [projects, setProjects] = useState([])
   const [loading, setLoading]   = useState(true)
 
   useEffect(() => {
+    // If no user and no projects, redirect to landing
+    if (!user && projects.length === 0 && !loading) {
+      navigate('/landing')
+      return
+    }
+
     projectsAPI.list(0, 10)
       .then(r => setProjects(r.data))
       .catch(() => {})
       .finally(() => setLoading(false))
-  }, [])
+  }, [user, navigate, projects.length, loading])
 
   const stats = {
     total:     projects.length,
@@ -43,7 +52,12 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="px-8 py-8 max-w-5xl mx-auto animate-fade-in">
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      className="px-8 py-8 max-w-5xl mx-auto"
+    >
       <PageHeader
         title="Dashboard"
         subtitle="Your AI-powered project workspace"
@@ -56,19 +70,34 @@ export default function Dashboard() {
       />
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-4 mb-8">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2, duration: 0.6 }}
+        className="grid grid-cols-3 gap-4 mb-8"
+      >
         <StatCard label="Total Projects"     value={stats.total}     icon={FolderOpen}    color="accent" />
         <StatCard label="Completed"          value={stats.completed} icon={CheckCircle}   color="emerald" />
         <StatCard label="Unique Stacks Used" value={stats.stacks}    icon={Sparkles}      color="cyan" />
-      </div>
+      </motion.div>
 
       {/* Quick actions */}
-      <div className="mb-8">
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4, duration: 0.6 }}
+        className="mb-8"
+      >
         <h2 className="text-sm font-semibold text-subtle mb-3 uppercase tracking-wider font-mono">Quick Actions</h2>
         <div className="grid grid-cols-3 gap-4">
-          {quickActions.map(({ label, desc, icon: Icon, to, color }) => (
-            <button
+          {quickActions.map(({ label, desc, icon: Icon, to, color }, index) => (
+            <motion.button
               key={to}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 + index * 0.1, duration: 0.6 }}
+              whileHover={{ scale: 1.02, y: -2 }}
+              whileTap={{ scale: 0.98 }}
               onClick={() => navigate(to)}
               className="card-hover text-left group flex flex-col gap-3"
             >
@@ -84,13 +113,17 @@ export default function Dashboard() {
                 <p className="text-xs text-muted mt-0.5">{desc}</p>
               </div>
               <ArrowRight size={14} className="text-muted group-hover:text-accent group-hover:translate-x-1 transition-all" />
-            </button>
+            </motion.button>
           ))}
         </div>
-      </div>
+      </motion.div>
 
       {/* Recent projects */}
-      <div>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.8, duration: 0.6 }}
+      >
         <h2 className="text-sm font-semibold text-subtle mb-3 uppercase tracking-wider font-mono">Recent Projects</h2>
         {loading ? (
           <div className="space-y-3">
@@ -109,9 +142,13 @@ export default function Dashboard() {
           />
         ) : (
           <div className="space-y-2">
-            {projects.map(p => (
-              <div
+            {projects.map((p, index) => (
+              <motion.div
                 key={p.id}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 1 + index * 0.1, duration: 0.6 }}
+                whileHover={{ scale: 1.01, x: 4 }}
                 onClick={() => navigate(`/projects/${p.id}`)}
                 className="card-hover flex items-center gap-4 cursor-pointer group"
               >
@@ -129,11 +166,11 @@ export default function Dashboard() {
                   </span>
                   <ArrowRight size={14} className="text-muted group-hover:text-accent" />
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         )}
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   )
 }
