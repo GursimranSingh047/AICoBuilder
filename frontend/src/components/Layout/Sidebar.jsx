@@ -3,15 +3,17 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
   LayoutDashboard, Sparkles, MessageSquare, Lightbulb,
-  LogOut, LogIn, User, Zap, Home
+  LogOut, LogIn, User, Zap, Home, Activity, BarChart3
 } from 'lucide-react'
 import { useAuth } from '../../context/AuthContext'
 
 const links = [
-  { to: '/',           label: 'Dashboard',  icon: LayoutDashboard, end: true },
+  { to: '/dashboard',  label: 'Dashboard',  icon: LayoutDashboard },
   { to: '/generator',  label: 'Generator',  icon: Sparkles },
   { to: '/chat',       label: 'AI Chat',    icon: MessageSquare },
   { to: '/suggestions',label: 'Suggestions',icon: Lightbulb },
+  { to: '/activity',   label: 'Activity',   icon: Activity },
+  { to: '/analytics',  label: 'Analytics',  icon: BarChart3 },
   { to: '/landing',    label: 'Home',       icon: Home },
 ]
 
@@ -64,7 +66,7 @@ export default function Sidebar() {
         >
           Navigation
         </motion.p>
-        {links.map(({ to, label, icon: Icon, end }, index) => (
+        {links.map(({ to, label, icon: Icon }, index) => (
           <motion.div
             key={to}
             initial={{ x: -20, opacity: 0 }}
@@ -73,7 +75,6 @@ export default function Sidebar() {
           >
             <NavLink
               to={to}
-              end={end}
               className={({ isActive }) =>
                 `sidebar-link${isActive ? ' active' : ''}`
               }

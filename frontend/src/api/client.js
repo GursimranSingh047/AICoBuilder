@@ -1,8 +1,12 @@
 import axios from 'axios'
 
+// ─── Environment Configuration ───────────────────────────────────────────────
+// Use environment variable for API URL (falls back to localhost for development)
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+
 // ─── Base client ─────────────────────────────────────────────────────────────
 const api = axios.create({
-  baseURL: 'http://127.0.0.1:8000',
+  baseURL: API_BASE_URL,
   timeout: 60000,          // 60 s – generation can be slow
   headers: { 'Content-Type': 'application/json' },
 })
@@ -49,7 +53,7 @@ export const projectsAPI = {
   get: (id) => api.get(`/projects/${id}`),
 
   // GET /projects/{id}/download  (returns blob)
-  downloadUrl: (id) => `http://127.0.0.1:8000/projects/${id}/download`,
+  downloadUrl: (id) => `${API_BASE_URL}/projects/${id}/download`,
 
   // DELETE /projects/{id}
   delete: (id) => api.delete(`/projects/${id}`),

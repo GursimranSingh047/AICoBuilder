@@ -18,7 +18,7 @@ from loguru import logger
 from app.core.config import settings
 from app.core.logging import setup_logging
 from app.database import init_db
-from app.routers import auth, projects, chat, suggest
+from app.routers import auth, projects, chat, suggest, activity, analytics
 
 
 # ─── Lifespan (startup / shutdown) ───────────────────────────────────────────
@@ -76,6 +76,8 @@ app.include_router(auth.router)
 app.include_router(projects.router)
 app.include_router(chat.router)
 app.include_router(suggest.router)
+app.include_router(activity.router)
+app.include_router(analytics.router)
 
 
 # ─── Health check ────────────────────────────────────────────────────────────

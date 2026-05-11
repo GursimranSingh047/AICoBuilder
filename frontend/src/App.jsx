@@ -9,6 +9,8 @@ import Dashboard   from './pages/Dashboard'
 import Generator   from './pages/Generator'
 import Chat        from './pages/Chat'
 import Suggestions from './pages/Suggestions'
+import Activity    from './pages/Activity'
+import Analytics   from './pages/Analytics'
 import ProjectViewer from './pages/ProjectViewer'
 import Login       from './pages/Login'
 import Signup      from './pages/Signup'
@@ -24,6 +26,9 @@ export default function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
+          {/* Root redirects to landing */}
+          <Route path="/" element={<Navigate to="/landing" replace />} />
+          
           {/* Landing page */}
           <Route path="/landing" element={<Landing />} />
           
@@ -33,11 +38,13 @@ export default function App() {
 
           {/* App pages – sidebar layout, no auth wall (optional auth) */}
           <Route element={<AppLayout />}>
-            <Route index                      element={<Dashboard />} />
-            <Route path="generator"           element={<Generator />} />
-            <Route path="chat"                element={<Chat />} />
-            <Route path="suggestions"         element={<Suggestions />} />
-            <Route path="projects/:id"        element={<ProjectViewer />} />
+            <Route path="dashboard"              element={<Dashboard />} />
+            <Route path="generator"              element={<Generator />} />
+            <Route path="chat"                   element={<Chat />} />
+            <Route path="suggestions"            element={<Suggestions />} />
+            <Route path="activity"               element={<Activity />} />
+            <Route path="analytics"              element={<Analytics />} />
+            <Route path="projects/:id"           element={<ProjectViewer />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/landing" replace />} />

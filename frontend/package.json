@@ -9,18 +9,16 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
-    "@react-three/drei": "^10.7.7",
-    "@react-three/fiber": "^9.6.0",
-    "@react-three/postprocessing": "^3.0.4",
     "axios": "^1.7.2",
     "framer-motion": "^12.38.0",
     "lucide-react": "^0.395.0",
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
     "react-hot-toast": "^2.6.0",
+    "react-is": "^19.2.5",
     "react-router-dom": "^6.24.0",
     "react-syntax-highlighter": "^15.5.0",
-    "three": "^0.184.0"
+    "recharts": "^3.8.1"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.0",
