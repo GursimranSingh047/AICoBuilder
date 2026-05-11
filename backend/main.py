@@ -7,10 +7,6 @@ load_dotenv()
 
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
-import os
-print("KEY:", os.getenv("AIzaSyDYkFadYYfPKPiZl6hnwaczk1B0f5jI5FM"))
-from contextlib import asynccontextmanager
-from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from loguru import logger

@@ -1,0 +1,64 @@
+# ============================================================================
+# Render Ignore File
+# ============================================================================
+# Files and directories to exclude from Render deployment
+# Similar to .gitignore but specific to Render builds
+# ============================================================================
+
+# ── Python ──────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# ── Development Files ───────────────────────────────────────────────────────
+.env
+.env.local
+.env.development
+*.db
+test.db
+projectpilot.db
+
+# ── Testing ─────────────────────────────────────────────────────────────────
+.pytest_cache/
+.coverage
+htmlcov/
+tests/
+
+# ── IDE ─────────────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# ── Logs ────────────────────────────────────────────────────────────────────
+logs/
+*.log
+
+# ── Documentation ───────────────────────────────────────────────────────────
+README.md
+FIXES_APPLIED.md
+*.md
+
+# ── Generated Projects (Optional) ───────────────────────────────────────────
+# Uncomment if you don't want to deploy generated projects
+# generated_projects/*
+# !generated_projects/.gitkeep
+
+# ── Docker (Not needed on Render) ───────────────────────────────────────────
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# ── Git ─────────────────────────────────────────────────────────────────────
+.git/
+.gitignore
+.gitattributes

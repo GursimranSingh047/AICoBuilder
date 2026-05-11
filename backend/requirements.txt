@@ -1,18 +1,54 @@
+# ============================================================================
+# ProjectPilot Backend - Production Dependencies
+# ============================================================================
+# Python 3.11.9 (specified in runtime.txt)
+# Compatible with Render.com free tier
+# Last updated: 2026-05-12
+# ============================================================================
+
+# ── Core Framework ──────────────────────────────────────────────────────────
 fastapi==0.111.0
 uvicorn[standard]==0.30.1
+
+# ── Data Validation ─────────────────────────────────────────────────────────
 pydantic==2.7.1
 pydantic-settings==2.3.0
+
+# ── Database ────────────────────────────────────────────────────────────────
 sqlalchemy==2.0.30
 alembic==1.13.1
+
+# PostgreSQL adapter (binary version for easier deployment)
 psycopg2-binary==2.9.9
+
+# ── Authentication & Security ───────────────────────────────────────────────
 python-jose[cryptography]==3.3.0
 passlib[bcrypt]==1.7.4
+
+# ── HTTP & File Handling ────────────────────────────────────────────────────
 python-multipart==0.0.9
 httpx==0.27.0
+aiofiles==23.2.1
+
+# ── AI / ML ─────────────────────────────────────────────────────────────────
+# Google Generative AI SDK
 google-generativeai==0.7.2
+
+# Machine Learning
 scikit-learn==1.5.0
 numpy==1.26.4
 joblib==1.4.2
+
+# ── Utilities ───────────────────────────────────────────────────────────────
 python-dotenv==1.0.1
-aiofiles==23.2.1
 loguru==0.7.2
+
+# ============================================================================
+# NOTES FOR RENDER DEPLOYMENT:
+# ============================================================================
+# 1. Python version is locked to 3.11.9 in runtime.txt
+# 2. All packages are pinned to specific versions for reproducibility
+# 3. psycopg2-binary is used instead of psycopg2 (no compilation needed)
+# 4. uvicorn[standard] includes performance optimizations
+# 5. All dependencies are compatible with Render free tier
+# ============================================================================

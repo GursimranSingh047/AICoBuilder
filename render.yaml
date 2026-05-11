@@ -1,0 +1,135 @@
+# ============================================================================
+# Render Blueprint Configuration
+# ============================================================================
+# This file defines the infrastructure for ProjectPilot on Render.com
+# Documentation: https://render.com/docs/blueprint-spec
+# ============================================================================
+
+services:
+  # ── Backend Web Service ───────────────────────────────────────────────────
+  - type: web
+    name: projectpilot-backend
+    runtime: python
+    region: oregon  # Change to your preferred region
+    plan: free  # Options: free, starter, standard, pro
+    
+    # Build configuration
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port 10000
+    
+    # Root directory
+    rootDir: backend
+    
+    # Environment variables (add sensitive values in Render dashboard)
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      
+      - key: DEBUG
+        value: false
+      
+      - key: APP_NAME
+        value: ProjectPilot
+      
+      - key: APP_VERSION
+        value: 1.0.0
+      
+      - key: JWT_ALGORITHM
+        value: HS256
+      
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: 60
+      
+      - key: PROJECTS_DIR
+        value: ./generated_projects
+      
+      # ⚠️ SENSITIVE - Add these manually in Render dashboard:
+      # - openai_api_key (your OpenRouter/OpenAI/Gemini API key)
+      # - SECRET_KEY (generate with: python -c "import secrets; print(secrets.token_urlsafe(32))")
+      # - OPENAI_MODEL (e.g., gpt-3.5-turbo)
+      # - ALLOWED_ORIGINS (your frontend URL, e.g., https://your-app.vercel.app)
+      # - DATABASE_URL (auto-provided if you link a PostgreSQL database)
+    
+    # Health check
+    healthCheckPath: /health
+    
+    # Auto-deploy
+    autoDeploy: true
+    
+    # Disk storage (optional, for generated projects)
+    # Note: Free tier has ephemeral storage (files lost on restart)
+    # disk:
+    #   name: projectpilot-storage
+    #   mountPath: /opt/render/project/src/backend/generated_projects
+    #   sizeGB: 1
+
+# ── Database (Optional - Recommended for Production) ─────────────────────────
+# Uncomment to add a PostgreSQL database
+# databases:
+#   - name: projectpilot-db
+#     databaseName: projectpilot
+#     user: projectpilot
+#     region: oregon
+#     plan: free  # Free tier: 90 days, then $7/month
+#     ipAllowList: []  # Empty = allow all (required for free tier)
+
+# ============================================================================
+# DEPLOYMENT INSTRUCTIONS:
+# ============================================================================
+# 
+# Option 1: Deploy via Render Dashboard (Recommended)
+# ----------------------------------------------------
+# 1. Go to https://dashboard.render.com/
+# 2. Click "New +" → "Web Service"
+# 3. Connect your GitHub repository
+# 4. Configure:
+#    - Name: projectpilot-backend
+#    - Region: Oregon (or your preferred region)
+#    - Branch: main
+#    - Root Directory: backend
+#    - Runtime: Python 3
+#    - Build Command: pip install -r requirements.txt
+#    - Start Command: uvicorn main:app --host 0.0.0.0 --port 10000
+# 5. Add environment variables (see RENDER_DEPLOYMENT_GUIDE.md)
+# 6. Click "Create Web Service"
+#
+# Option 2: Deploy via render.yaml (Blueprint)
+# ---------------------------------------------
+# 1. Push this render.yaml to your repository root
+# 2. Go to https://dashboard.render.com/
+# 3. Click "New +" → "Blueprint"
+# 4. Connect your repository
+# 5. Render will read this file and create all services
+# 6. Add sensitive environment variables manually in dashboard
+#
+# ============================================================================
+# IMPORTANT NOTES:
+# ============================================================================
+# 
+# 1. Python Version:
+#    - Locked to 3.11.9 in backend/runtime.txt
+#    - Prevents Python 3.14 compatibility issues
+#
+# 2. Environment Variables:
+#    - Add sensitive values (API keys, secrets) manually in Render dashboard
+#    - Never commit secrets to this file
+#
+# 3. Database:
+#    - SQLite works for development but NOT recommended for production
+#    - Use PostgreSQL for production (uncomment database section above)
+#    - Render provides DATABASE_URL automatically when linked
+#
+# 4. Storage:
+#    - Free tier has ephemeral storage (files lost on restart)
+#    - Upgrade to paid plan for persistent disk storage
+#    - Or use external storage (S3, Cloudinary, etc.)
+#
+# 5. Health Checks:
+#    - Render pings /health endpoint to verify service is running
+#    - Returns {"status": "ok"} when healthy
+#
+# 6. Auto-Deploy:
+#    - Enabled by default (deploys on every push to main branch)
+#    - Disable in Render dashboard if you prefer manual deploys
+#
+# ============================================================================
