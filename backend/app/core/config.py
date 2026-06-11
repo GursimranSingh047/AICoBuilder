@@ -29,7 +29,7 @@ class Settings(BaseSettings):
     PROJECTS_DIR: str = "./generated_projects"
 
     # CORS
-    ALLOWED_ORIGINS: str = "http://localhost:3000,http://localhost:5173"
+    ALLOWED_ORIGINS: str = "http://localhost:3000,http://localhost:5173,https://ai-cobuilder.netlify.app"
 
     @property
     def allowed_origins_list(self) -> List[str]:
