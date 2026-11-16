@@ -1,6 +1,6 @@
 # 🔒 Security & Environment Configuration Guide
 
-## ⚠️ CRITICAL SECURITY NOTICE
+## ⚠️ CRITICAL SECURITY NOTICE:
 
 **Your API keys were previously committed to Git history!**
 
