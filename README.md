@@ -1,6 +1,6 @@
  AI Co-Builder (ProjectPilot)
 
- Overview
+ Overview:-
 
 AI Co-Builder (ProjectPilot) is an AI-powered platform that generates complete project code based on user prompts. It integrates backend APIs with AI models to automate software development tasks and improve productivity.
 
@@ -47,7 +47,7 @@ uvicorn main:app --reload
 
 For running frontend server
 npm run dev
-
+.......
 
 
 
