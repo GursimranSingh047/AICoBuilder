@@ -6,7 +6,7 @@ Complete guide for deploying ProjectPilot to production.
 
 ## 📋 Pre-Deployment Checklist
 
-- [ ] All API keys are in `.env` files (not hardcoded)
+- [ ] All API keys are in `.env` file.
 - [ ] `.env` files are in `.gitignore`
 - [ ] Old API keys from Git history have been revoked
 - [ ] New API keys generated for production
